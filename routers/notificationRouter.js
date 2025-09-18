@@ -7,5 +7,5 @@ const {sendNotification,getMyNotifications,deleteNotification,readNotif}=require
 router.post("/envoyerNotification",protect,sendNotification);//approuve
 router.get("/mesNotifs",protect,getMyNotifications)//approuved
 router.delete("/supprimerNotif/:id",protect,deleteNotification)// approuved
-router.update("/modifierNotif/:id",protect,readNotif)// approuved
+router.put("/modifierNotif/:id",protect,readNotif)// approuved
 module.exports=router;
