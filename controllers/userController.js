@@ -58,6 +58,17 @@ exports.getProfile= async(req,res)=>{
 
 
 }
+ exports.updateMyProfil=async(req,res)=>{
+    const{name,password,image}=req.body;
+    const id=req.user._id
+    try{
+        const profile=await User.findOneAndUpdate({_id:id},{name,password,image},{  new: true,runValidators: true });
+        return res.status(201).json({message:"profile mis a jours avec succés",data:profile})
+    }catch(err){
+ return res.status(500).json({message:err.message})
+    }
+
+ }
 exports.getUsers=async(req,res)=>{
     const users=await User.find();
     return res.status(200).json(users)

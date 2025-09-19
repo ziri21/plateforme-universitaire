@@ -7,7 +7,10 @@ const UserShema= new mongoose.Schema(
         required:[true,"champs requis"],
         minlength:[3,"il faut au moins 3 caracteres"],
         trim:true
-    },
+    },image:{
+        type:String
+    }
+    ,
     email:{
         type:String,
         required:[true,"champs requis"],
