@@ -43,7 +43,7 @@ exports.deleteNotification=async(req,res)=>{
    return res.status(500).json({message:err})
 }
 }
-exports.readNotif=async()=>{
+exports.readNotif=async(req,res)=>{
    const {status}=req.body;
 
    const id=req.params.id;
