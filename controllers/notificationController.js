@@ -50,12 +50,12 @@ exports.readNotif=async(req,res)=>{
    try{
    const notifStatus= await Notification.findOneAndUpdate({_id:id},{status:status},{  new: true,runValidators: true });
    if(!notifStatus){
-      return res.status(400).json({message:"mise a jours echouee"})
+      return res.status(404).json({message:"mise a jours echouee"})
    }
    res.status(200).json({message:"Notification lue",
       data:notifStatus
    })}catch(err){
-      return res.status(500).json(err.message)
+      return res.status(500).json({message:err.message})
    }
 
 }
