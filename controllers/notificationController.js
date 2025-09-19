@@ -47,9 +47,12 @@ exports.readNotif=async()=>{
    const {status}=req.body;
 
    const id=req.params.id;
-   const notifStatus= await Notification.findOneAndUpdate({id:id},{status:status},{ runValidators: true })
+   try{
+   const notifStatus= await Notification.findOneAndUpdate({_id:id},{status:status},{ runValidators: true })
    res.status(200).json({message:"Notification lue",
       data:notifStatus
-   })
+   })}catch(err){
+      return res.status(500).json(err.message)
+   }
 
 }
