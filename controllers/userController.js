@@ -14,7 +14,7 @@ exports.createUser= async(req,res)=>{
     if(exists){
         return res.status(409).json({message:"utilisateur existe deja"})
     }
-    const user= await User.create({name,email,password,role})
+    const user= await User.create({name,email,password,role,image: req.body.image || null})
     return res.status(201).json({
         message:"utilisateur cree",
         id:user._id,

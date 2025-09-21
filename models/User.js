@@ -8,7 +8,8 @@ const UserShema= new mongoose.Schema(
         minlength:[3,"il faut au moins 3 caracteres"],
         trim:true
     },image:{
-        type:String
+        type:String,
+        default:null
     }
     ,
     email:{
