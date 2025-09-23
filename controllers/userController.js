@@ -7,6 +7,7 @@ const generateToken= async(user)=>{
     return  await jwt.sign({id:user._id,role:user.role},process.env.JWT_SECRET,{expiresIn:"7d"}) //ne jamais inclure le mot de passe 
 
 }
+
 exports.createUser= async(req,res)=>{
     const{name,email,password,role}=req.body;
     try{
@@ -60,11 +61,8 @@ exports.getProfile= async(req,res)=>{
 }
 exports.updateMyProfil = async (req, res) => {
   try {
-    const { name, password, image } = req.body;
+    const { name, password } = req.body;
     const id = req.user._id;
-
-    // Vérification
-    console.log("Update profil user:", id, req.body);
 
     const user = await User.findById(id);
     if (!user) {
@@ -72,9 +70,10 @@ exports.updateMyProfil = async (req, res) => {
     }
 
     if (name) user.name = name;
-    if (image) user.image = image;
+    if (req.file) {
+      user.image = `/uploads/${req.file.filename}`; // garde le chemin vers l’image
+    }
     if (password) {
-      const bcrypt = require("bcrypt");
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
     }
