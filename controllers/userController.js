@@ -61,25 +61,29 @@ exports.getProfile= async(req,res)=>{
 }
 exports.updateMyProfil = async (req, res) => {
   try {
+    const { name, password, email } = req.body;
     const id = req.user._id;
-    const { name, password } = req.body; // maintenant req.body sera rempli par multer
 
     const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({ message: "Utilisateur non trouvé" });
-    }
+    if (!user) return res.status(404).json({ message: "Utilisateur non trouvé" });
 
     if (name) user.name = name;
+    if (email) user.email = email;
+
+    // si un fichier image est envoyé
     if (req.file) {
-      user.image = `/uploads/${req.file.filename}`; // multer fournit req.file
+      // ici req.file.buffer contient l'image en binaire
+      // tu peux soit l’enregistrer sur Cloudinary, soit en base64
+      user.image = req.file.buffer.toString("base64"); 
+      // ou Cloudinary.upload(req.file.buffer) etc.
     }
+
     if (password) {
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
     }
 
     const updatedUser = await user.save();
-
     res.status(200).json({
       message: "Profil mis à jour avec succès",
       data: updatedUser,
@@ -88,6 +92,7 @@ exports.updateMyProfil = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 exports.getUsers=async(req,res)=>{
     const users=await User.find();
