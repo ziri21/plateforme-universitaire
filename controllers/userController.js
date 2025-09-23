@@ -58,17 +58,38 @@ exports.getProfile= async(req,res)=>{
 
 
 }
- exports.updateMyProfil=async(req,res)=>{
-    const{name,password,image}=req.body;
-    const id=req.user._id
-    try{
-        const profile=await User.findOneAndUpdate({_id:id},{name,password,image},{  new: true,runValidators: true });
-        return res.status(201).json({message:"profile mis a jours avec succés",data:profile})
-    }catch(err){
- return res.status(500).json({message:err.message})
+exports.updateMyProfil = async (req, res) => {
+  try {
+    const { name, password, image } = req.body;
+    const id = req.user._id;
+
+    // Vérification
+    console.log("Update profil user:", id, req.body);
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
 
- }
+    if (name) user.name = name;
+    if (image) user.image = image;
+    if (password) {
+      const bcrypt = require("bcrypt");
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+    }
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      message: "Profil mis à jour avec succès",
+      data: updatedUser,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 exports.getUsers=async(req,res)=>{
     const users=await User.find();
     return res.status(200).json(users)
