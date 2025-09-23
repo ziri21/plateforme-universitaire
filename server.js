@@ -22,6 +22,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/inscriptions", inscriptionRouter);
 app.use("/api/notes",noteRouter);
 app.use("/api/notifications",notificationRouter)
+app.use("/uploads", express.static("uploads"));
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log(" Connecté à MongoDB"))
   .catch(err => console.error(" Erreur MongoDB :", err));

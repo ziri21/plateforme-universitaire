@@ -61,8 +61,8 @@ exports.getProfile= async(req,res)=>{
 }
 exports.updateMyProfil = async (req, res) => {
   try {
-    const { name, password } = req.body;
     const id = req.user._id;
+    const { name, password } = req.body; // maintenant req.body sera rempli par multer
 
     const user = await User.findById(id);
     if (!user) {
@@ -71,7 +71,7 @@ exports.updateMyProfil = async (req, res) => {
 
     if (name) user.name = name;
     if (req.file) {
-      user.image = `/uploads/${req.file.filename}`; // garde le chemin vers l’image
+      user.image = `/uploads/${req.file.filename}`; // multer fournit req.file
     }
     if (password) {
       const salt = await bcrypt.genSalt(10);
