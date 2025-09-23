@@ -22,7 +22,7 @@ const UserShema= new mongoose.Schema(
     password:{
         type:String,
         required:[true,"champs requis"],
-        minlenghth:[6,"au moins 6 caracteres "]
+        minlength:[6,"au moins 6 caracteres "]
     },
     role:{
         required:[true,"champs requis"],
@@ -45,9 +45,11 @@ return bcrypt.compare(mdpSaisi,this.password)
 
 }
 
-UserShema.pre("save",async function(next){
-    if (!this.isModified("password")) return next();
-    const salt= await bcrypt.genSalt(10);
-    this.password= await bcrypt.hash(this.password,salt)
-})
+UserShema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next(); // très important
+});
+
 module.exports= mongoose.model("User",UserShema)
