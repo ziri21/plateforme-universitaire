@@ -102,7 +102,7 @@ exports.updateMyProfil = async (req, res) => {
         name: updatedUser.name,
         email: updatedUser.email,
         role: updatedUser.role,
-        image: updatedUser.image,
+        image: user.image ? user.image.toString("base64") : null
       },
     });
   } catch (err) {
