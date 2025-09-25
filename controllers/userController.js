@@ -53,6 +53,7 @@ exports.login = async (req, res) => {
       email: exists.email,
       role: exists.role,
       image: exists.image,
+      createdAt:exists.createdAt,
       token: await generateToken(exists),
     });
   } catch (err) {
