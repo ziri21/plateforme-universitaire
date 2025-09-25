@@ -90,8 +90,8 @@ exports.updateMyProfil = async (req, res) => {
     }
 
     if (password && password.trim() !== "") {
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
+      
+      user.password = password;
     }
 
     const updatedUser = await user.save();
