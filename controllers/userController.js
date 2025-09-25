@@ -89,12 +89,13 @@ exports.updateMyProfil = async (req, res) => {
       user.image = req.file.buffer.toString("base64");
     }
 
-    if (password) {
+    if (password && password.trim() !== "") {
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
     }
 
     const updatedUser = await user.save();
+
     res.status(200).json({
       message: "Profil mis à jour avec succès",
       data: {
@@ -102,7 +103,7 @@ exports.updateMyProfil = async (req, res) => {
         name: updatedUser.name,
         email: updatedUser.email,
         role: updatedUser.role,
-        image: user.image ? user.image.toString("base64") : null
+        image: updatedUser.image, // déjà en base64
       },
     });
   } catch (err) {
