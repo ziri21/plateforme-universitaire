@@ -32,6 +32,7 @@ exports.createUser = async (req, res) => {
       email: user.email,
       role: user.role,
       image: user.image,
+      createdAt:user.createdAt,
       token: await generateToken(user),
     });
   } catch (err) {
