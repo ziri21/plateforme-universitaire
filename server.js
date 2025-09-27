@@ -3,6 +3,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+
 const cors = require("cors");
 
 const coursRoutes = require("./routers/coursRouter"); // fichier correct
@@ -10,6 +11,7 @@ const userRoutes = require("./routers/userRouter");   // fichier correct
 const inscriptionRouter= require("./routers/inscriptionRouter");   // fichier correct
 const noteRouter=require("./routers/noteRouter");
 const notificationRouter=require("./routers/notificationRouter")
+const departementRoutes = require('./routers/departementRouter')
 dotenv.config();
 
 const app = express();
@@ -23,6 +25,7 @@ app.use("/api/inscriptions", inscriptionRouter);
 app.use("/api/notes",noteRouter);
 app.use("/api/notifications",notificationRouter)
 app.use("/uploads", express.static("uploads"));
+app.use('/api/departements', departementRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log(" Connecté à MongoDB"))
